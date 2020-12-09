@@ -49,24 +49,45 @@ class Bullet
         this.y=this.y+this.velocity.y;
     }
 }
-let bullets=[];
+    let eHeight=200;
+    let eWidth=200;
+    let ePosX=canvas.width/2-95;
+    let ePosY=canvas.height/2-100;
+let bullets=[
+    new Bullet(canvas.width/2,canvas.height/2,7,7,{x:1,y:1}),
+    new Bullet(canvas.width/2,canvas.height/2,7,7,{x:-1,y:1}),
+    new Bullet(canvas.width/2,canvas.height/2,7,7,{x:1,y:-1}),
+    new Bullet(canvas.width/2,canvas.height/2,7,7,{x:-1,y:-1})
+];
+function animate()
+{
+    tool.clearRect(0,0,canvas.width,canvas.height);
+    tool.fillRect(0,0,canvas.width,canvas.height);
+    tool.drawImage(spaceImage,0,0,canvas.width,canvas.height);
+    let earth=new Planet(ePosX,ePosY,eWidth,eHeight); 
+    earth.draw();
+    
+    for(let i=0;i<bullets.length;i++)
+    {
+        bullets[i].update();
+    }
+    requestAnimationFrame(animate);
+}
 startBtn.addEventListener("click",function(e)
 {
     e.stopImmediatePropagation();
     box.style.display="none";
     tool.fillRect(0,0,canvas.width,canvas.height);
     tool.drawImage(spaceImage,0,0,canvas.width,canvas.height);
-    let eHeight=200;
-    let eWidth=200;
-    let ePosX=canvas.width/2-100;
-    let ePosY=canvas.height/2-100;
+    
     let earth=new Planet(ePosX,ePosY,eWidth,eHeight); 
     earth.draw();
     window.addEventListener("click",function(e){
-        console.log(e);
-        console.log("clicked");
-        let bullet=new Bullet(e.clientX,e.clientY,7,7);
-        bullet.draw()
-        bullets.push(bullet);
+        // console.log(e);
+        // console.log("clicked");
+        // let bullet=new Bullet(e.clientX,e.clientY,7,7);
+        // bullet.draw()
+        // bullets.push(bullet);
+        animate();
     });
 });
