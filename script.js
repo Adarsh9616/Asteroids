@@ -152,14 +152,14 @@ function animate()
             alert("Game Over");
         }
         bullets.forEach(function(bullet,bulletIndex){
-            if(colRect(bullet,enemy))
+            if(colRect1(bullet,enemy))
             {
                 //explosion
                 for(let i =0;i<enemy.width*4;i++)
                 {
                     particles.push(new Particle(bullet.x,bullet.y,Math.random()*2,{
-                        x:((Math.random()-0.5)*Math.random()*3),
-                        y:((Math.random()-0.5)*Math.random()*3)
+                        x:((Math.random()-0.5)*Math.random()*5),
+                        y:((Math.random()-0.5)*Math.random()*5)
                     }));
                 }
                 setTimeout(()=>{
@@ -189,8 +189,8 @@ function createCorona()
         }
         let angle=Math.atan2(canvas.height/2-50-y,canvas.width/2-50-x);
         let velocity={
-            x:Math.cos(angle)*1,
-            y:Math.sin(angle)*1
+            x:Math.cos(angle)*2,
+            y:Math.sin(angle)*2
         }
         let corona=new Corona(x,y,100,100,velocity);
         coronas.push(corona);
@@ -221,6 +221,22 @@ startBtn.addEventListener("click",function(e)
 });
 
 function colRect(entity1,entity2)
+{
+    let l1= entity1.x+30;
+    let l2= entity2.x+28;
+    let r1=entity1.x + entity1.width-25;
+    let r2=entity2.x + entity2.width-25;
+    let t1=entity1.y+entity1.height-25;
+    let t2=entity2.y+entity2.height-25;
+    let b1=entity1.y+28;
+    let b2=entity2.y+28;
+    if(l1<r2&&l2<r1&&t1>b2&&t2>b1)
+    {
+        return true;
+    }
+    return false;
+}
+function colRect1(entity1,entity2)
 {
     let l1= entity1.x;
     let l2= entity2.x;
