@@ -7,10 +7,16 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
+    <h2 class="score">Score:<span>0</span></h2>
+    <div class="container">
+        <div class="meter">
+            <span style="width: 100%"></span>
+        </div>
+    </div>
     <div class="box">
         <h1 class="box_title">ASTEROIDS</h1>
         <button class="start btn">START GAME</button>
+        <button class="restart btn" style="display: none">RESTART GAME</button>
     </div>
     <canvas class="board"></canvas>
     <script src="script.js"></script>

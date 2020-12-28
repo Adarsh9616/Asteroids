@@ -1,10 +1,11 @@
 // alert("JS Loaded");
 
-let startBtn=document.querySelector(".btn");
+let startBtn=document.querySelector(".start");
+let restartBtn=document.querySelector(".restart");
 let box=document.querySelector(".box");
 
 let canvas=document.querySelector(".board");
-
+let ple=document.querySelector(".meter span");
 let tool=canvas.getContext("2d");
 canvas.height=window.innerHeight-4.5;
 canvas.width=window.innerWidth-4.5;
@@ -14,7 +15,9 @@ let earthImg=new Image();
 earthImg.src="earth.png";
 let coronaImg=new Image();
 coronaImg.src="Asteroid.png";
-
+let scorElem=document.querySelector("span");
+let score =0;
+let fullPower=100;
 class Corona
 {
     constructor(x,y,width,height,velocity)
@@ -140,16 +143,21 @@ function animate()
 
         }
     }
-    let cLength=coronas.length;
-    for(let i=0;i<cLength;i++)
-    {
-        coronas[i].update();
+    coronas.forEach(function(corona,i){
+        corona.update();
         //creating collisions
-        let enemy = coronas[i];
+        let enemy = corona;
         if(colRect(earth,enemy))
         {
-            cancelAnimationFrame(animId);
-            alert("Game Over");
+            fullPower-=20;
+            ple.style.width=`${fullPower}%`;
+            coronas.splice(enemy,1);
+            if(fullPower==0)
+            {
+                cancelAnimationFrame(animId);
+                restart();
+            }
+            
         }
         bullets.forEach(function(bullet,bulletIndex){
             if(colRect1(bullet,enemy))
@@ -165,10 +173,12 @@ function animate()
                 setTimeout(()=>{
                     coronas.splice(i,1);
                     bullets.splice(bulletIndex,1)
+                    score+=100;
+                    scorElem.innerText=score;
                 },0)
             }
         });
-    }
+    });
     animId=requestAnimationFrame(animate);
 }
 function createCorona()
@@ -251,4 +261,22 @@ function colRect1(entity1,entity2)
         return true;
     }
     return false;
+}
+
+window.addEventListener("resize",function(){
+    window.location.reload();
+});
+
+function restart()
+{
+    //alert("Game Over");
+    restartBtn.style.display="block";
+    startBtn.style.display="none";
+    box.style.display="flex";
+    ple.parentElement.style.display="none";
+    canvas.height='0px';
+    document.body.style.backgroundColor="white";
+    restartBtn.addEventListener("click",function(){
+        window.location.reload()
+    })
 }
